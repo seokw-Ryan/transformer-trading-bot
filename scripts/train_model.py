@@ -6,9 +6,11 @@ from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
 from models.transformer_model import TransformerTimeSeries
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 def train_model():
-    x_data = np.load('../data/x_data.npy')
-    y_data = np.load('../data/y_data.npy')
+    x_data = np.load('./data/x_data.npy')
+    y_data = np.load('./data/y_data.npy')
 
     x_tensor = torch.from_numpy(x_data).float().unsqueeze(2)  # Shape: [batch, seq_len, feature_size]
     y_tensor = torch.from_numpy(y_data).float()
@@ -35,7 +37,7 @@ def train_model():
         print(f'Epoch {epoch+1}/{epochs}, Loss: {total_loss/len(dataloader)}')
 
     # Save the trained model
-    torch.save(model.state_dict(), '../models/transformer_model.pth')
+    torch.save(model.state_dict(), './models/transformer_model.pth')
     print('Model trained and saved successfully.')
 
 if __name__ == '__main__':

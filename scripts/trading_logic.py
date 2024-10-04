@@ -5,6 +5,10 @@ import numpy as np
 import pandas as pd
 from models.transformer_model import TransformerTimeSeries
 
+# Check if CUDA is available and set the device accordingly
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+
 def load_model():
     model = TransformerTimeSeries()
     model.load_state_dict(torch.load('../models/transformer_model.pth'))
