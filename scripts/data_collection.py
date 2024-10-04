@@ -13,4 +13,4 @@ def download_data(ticker, period='5y', interval='1d'):
     print(f'Data for {ticker} downloaded successfully.')
 
 if __name__ == '__main__':
-    download_data('AAPL')
+    download_data('NVDA')

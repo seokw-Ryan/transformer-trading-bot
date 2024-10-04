@@ -36,4 +36,4 @@ def preprocess_data(file_path):
     print('Data preprocessed and saved successfully.')
 
 if __name__ == '__main__':
-    preprocess_data('./data/AAPL_data.csv')
+    preprocess_data('./data/NVDA_data.csv')
