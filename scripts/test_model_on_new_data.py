@@ -6,6 +6,7 @@ import pandas as pd
 import torch
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
+import matplotlib.dates as mdates
 
 from models.transformer_model import TransformerTimeSeries
 
@@ -15,7 +16,7 @@ def collect_new_data(ticker, period='1mo', interval='1d'):
     print(f"Collecting new data for {ticker}...")
     data = yf.download(ticker, period=period, interval=interval)
     if not data.empty:
-        data.to_csv(f'./data/{ticker}_new_data.csv')
+        data.to_csv(f'./data/{ticker}_data.csv')
         print(f"New data for {ticker} saved successfully.")
     else:
         print("Failed to retrieve data.")
@@ -93,7 +94,13 @@ def evaluate_and_visualize(actual_prices, predicted_prices, dates, ticker):
     plt.ylabel('Price')
     plt.legend()
     plt.grid(True)
-    plt.show()
+
+    # Set the x-axis date format
+    ax = plt.gca()  # Get current axis
+    ax.xaxis.set_major_locator(mdates.AutoDateLocator())  # Automatically adjust date ticks
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format: Year-Month-Day
+
+    plt.xticks(rotation=45)  # Rotate date labels for better readability
 
     # Save the plot to a folder
     plots_folder = './plots'
@@ -107,7 +114,7 @@ def evaluate_and_visualize(actual_prices, predicted_prices, dates, ticker):
 def main():
    
     #Ask the user for the stock ticker
-    ticker = input("Enter the stock ticker to evaluate (e.g., APP, MSFT): ")
+    ticker = input("Enter the stock ticker to evaluate (e.g., AAPL, MSFT): ")
 
     #Parameters
     period = '3mo' #Period of data to retrieve 
@@ -115,7 +122,7 @@ def main():
     sequence_length = 60 #Same as used during training
 
     # Paths
-    new_data_path = f'./data/{ticker}_new_data.csv'
+    new_data_path = f'./data/{ticker}_data.csv'
     scaler_path = './data/scaler.npy'
     model_path = './models/transformer_model.pth'
 
